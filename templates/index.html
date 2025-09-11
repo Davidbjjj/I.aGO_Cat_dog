@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classificador de Gatos vs Cachorros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🐱 vs 🐶 Classificador</h1>
+        <p class="subtitle">Faça upload de uma imagem para descobrir se é um gato ou um cachorro</p>
+        
+        <div id="upload-area" class="upload-area">
+            <div class="upload-icon">📁</div>
+            <p class="upload-text">Arraste e solte uma imagem aqui ou</p>
+            <button class="upload-btn">Selecionar Arquivo</button>
+            <input type="file" id="file-input" accept="image/*">
+        </div>
+        
+        <div class="preview-container">
+            <img id="image-preview" alt="Pré-visualização da imagem">
+        </div>
+        
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Analisando imagem...</p>
+        </div>
+        
+        <div class="error"></div>
+        
+        <div class="result-container">
+            <div class="result-card">
+                <div id="result-icon" class="result-icon"></div>
+                <div id="result-text" class="result-text"></div>
+                <div id="confidence-text" class="confidence-text"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
