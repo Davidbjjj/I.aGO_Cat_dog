@@ -1,27 +1,37 @@
 from flask import Flask, render_template, request, jsonify
 import numpy as np
-import cv2
-import base64
-import io
 from tensorflow import keras
 from PIL import Image
+import io
+import base64
+import sys
+import traceback
 
 app = Flask(__name__)
 
 # Carregar modelo
 try:
     model = keras.models.load_model('cat_dog_classifier.h5')
+    print("Modelo carregado com sucesso!")
 except Exception as e:
-    print(f"Erro ao carregar modelo: {e}")
+    print(f"Erro ao carregar modelo: {e}", file=sys.stderr)
     model = None
 
 IMG_SIZE = (224, 224)
 CLASS_NAMES = ['🐱 Gato', '🐶 Cachorro']
 
 def preprocess_image(image):
-    image = image.convert("RGB").resize(IMG_SIZE)
-    image = np.array(image).astype("float32") / 255.0
-    return np.expand_dims(image, axis=0)
+    try:
+        # Garantir RGB e redimensionar
+        image = image.convert("RGB").resize(IMG_SIZE)
+        # Converter para numpy e normalizar
+        image = np.array(image).astype("float32") / 255.0
+        # Adicionar dimensão do batch
+        return np.expand_dims(image, axis=0)
+    except Exception as e:
+        print(f"Erro no pré-processamento: {e}", file=sys.stderr)
+        traceback.print_exc()
+        return None
 
 @app.route("/")
 def index():
@@ -38,6 +48,9 @@ def predict():
         image = Image.open(io.BytesIO(base64.b64decode(image_data)))
 
         processed = preprocess_image(image)
+        if processed is None:
+            return jsonify({"error": "Erro no pré-processamento da imagem"})
+
         prediction = model.predict(processed, verbose=0)[0][0]
 
         if prediction >= 0.5:
@@ -51,8 +64,10 @@ def predict():
             "confidence": round(confidence * 100, 2),
             "success": True
         })
-    except Exception as e:
-        print(f"Erro na predição: {e}")
-        return jsonify({"error": "Erro ao processar a imagem"})
 
-# ⚠️ Não colocar app.run(), a Vercel gerencia isso
+    except Exception as e:
+        print(f"Erro na predição: {e}", file=sys.stderr)
+        traceback.print_exc()
+        return jsonify({"error": "Erro interno ao processar a imagem"})
+
+# ⚠️ Não colocar app.run(), o Vercel gerencia isso
