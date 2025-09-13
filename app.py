@@ -1,33 +1,44 @@
 from flask import Flask, render_template, request, jsonify
 import numpy as np
+import base64
+import io
 from tensorflow import keras
 from PIL import Image
-import io
-import base64
 import sys
 import traceback
 
 app = Flask(__name__)
 
+MODEL_PATH = 'dog_cat_model.h5'
+
 # Carregar modelo
 try:
-    model = keras.models.load_model('cat_dog_classifier.h5')
+    model = keras.models.load_model(MODEL_PATH)
     print("Modelo carregado com sucesso!")
+    input_shape = model.input_shape  # ex: (None, None, None, 3) ou (None, 224, 224, 3)
+    print("Modelo espera entrada:", input_shape)
 except Exception as e:
     print(f"Erro ao carregar modelo: {e}", file=sys.stderr)
     model = None
+    input_shape = (None, 224, 224, 3)
 
-IMG_SIZE = (224, 224)
+# Detectar dinamicamente altura, largura e canais
+_, H, W, C = input_shape
+if H is None or W is None:
+    H, W = None, None
+
 CLASS_NAMES = ['🐱 Gato', '🐶 Cachorro']
 
 def preprocess_image(image):
     try:
-        # Garantir RGB e redimensionar
-        image = image.convert("RGB").resize(IMG_SIZE)
+        image = image.convert("RGB")
+        # Redimensionar apenas se altura/largura do modelo forem fixas
+        if H is not None and W is not None:
+            image = image.resize((W, H))
         # Converter para numpy e normalizar
-        image = np.array(image).astype("float32") / 255.0
+        img_array = np.array(image).astype("float32") / 255.0
         # Adicionar dimensão do batch
-        return np.expand_dims(image, axis=0)
+        return np.expand_dims(img_array, axis=0)
     except Exception as e:
         print(f"Erro no pré-processamento: {e}", file=sys.stderr)
         traceback.print_exc()
@@ -68,6 +79,7 @@ def predict():
     except Exception as e:
         print(f"Erro na predição: {e}", file=sys.stderr)
         traceback.print_exc()
-        return jsonify({"error": "Erro interno ao processar a imagem"})
+        return jsonify({"error": "Erro ao processar a imagem"})
 
-# ⚠️ Não colocar app.run(), o Vercel gerencia isso
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=8000, debug=True)
