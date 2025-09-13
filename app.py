@@ -6,10 +6,20 @@ from tensorflow import keras
 from PIL import Image
 import sys
 import traceback
+import gdown
+import os
 
 app = Flask(__name__)
 
-MODEL_PATH = 'dog_cat_model.h5'
+# Link de compartilhamento do Google Drive
+MODEL_URL = "https://drive.google.com/uc?id=1eZyfEF0l-tblLdzZ79fHKLBevrdgIAcU"
+MODEL_PATH = "model.h5"
+
+# Baixar modelo se não existir
+if not os.path.exists(MODEL_PATH):
+    print("Baixando modelo com gdown...")
+    gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+    print("Modelo baixado com sucesso!")
 
 # Carregar modelo
 try:
@@ -32,12 +42,9 @@ CLASS_NAMES = ['🐱 Gato', '🐶 Cachorro']
 def preprocess_image(image):
     try:
         image = image.convert("RGB")
-        # Redimensionar apenas se altura/largura do modelo forem fixas
         if H is not None and W is not None:
             image = image.resize((W, H))
-        # Converter para numpy e normalizar
         img_array = np.array(image).astype("float32") / 255.0
-        # Adicionar dimensão do batch
         return np.expand_dims(img_array, axis=0)
     except Exception as e:
         print(f"Erro no pré-processamento: {e}", file=sys.stderr)
