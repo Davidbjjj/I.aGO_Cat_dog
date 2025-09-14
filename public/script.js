@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
     resultContainer.className = "result-container";
     resultContainer.classList.add(data.class + "-result");
 
-    resultIcon.textContent = data.class.includes("gato") ? "🐱" : "🐶";
+    resultIcon.textContent = data.class === "cat" ? "🐱" : "🐶";
     resultText.textContent = data.class_name;
     confidenceText.textContent = `Confiança: ${data.confidence}%`;
 
