@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "index.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "nodeVersion": "20.x"
+      }
     },
     {
       "src": "public/**/*",
@@ -13,11 +16,23 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/index.js"
+      "dest": "/index.js",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"]
     },
     {
       "src": "/(.*)",
-      "dest": "/index.js"
+      "dest": "/index.js",
+      "methods": ["GET", "HEAD"]
+    },
+    {
+      "src": "/model/(.*)",
+      "dest": "/public/model/$1",
+      "methods": ["GET", "HEAD"]
+    },
+    {
+      "src": "/(.*\\.(css|js|html|png|jpg|jpeg|gif|ico|json|txt))",
+      "dest": "/public/$1",
+      "methods": ["GET", "HEAD"]
     }
   ],
   "env": {
@@ -26,7 +41,9 @@
   "functions": {
     "index.js": {
       "maxDuration": 30,
-      "memory": 1024
+      "memory": 1024,
+      "runtime": "nodejs20.x"
     }
-  }
+  },
+  "installCommand": "npm install"
 }
