@@ -104,5 +104,4 @@ out/
 .idea/
 *.swp
 
-# TensorFlow.js
-model/
+
