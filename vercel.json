@@ -8,6 +8,7 @@
         "nodeVersion": "20.x"
       }
     },
+    
     {
       "src": "public/**/*",
       "use": "@vercel/static"
