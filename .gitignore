@@ -68,3 +68,41 @@ dmypy.json
 
 # Profiling data
 .prof
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+
+# Ambiente
+.env
+.env.local
+.env.*.local
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Cache
+.cache/
+dist/
+build/
+tmp/
+out/
+
+# VSCode / IDEs
+.vscode/
+.idea/
+*.swp
+
+# TensorFlow.js
+model/
