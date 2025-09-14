@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classificador de Gatos vs Cachorros</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <div class="container">
@@ -36,11 +36,16 @@
                 <div id="confidence-text" class="confidence-text"></div>
             </div>
         </div>
+
+        <div class="api-info">
+            <p>📊 <a href="/api/health" target="_blank">Ver status da API</a></p>
+            <p>🔍 <a href="/api/recent-classifications" target="_blank">Ver classificações recentes</a></p>
+        </div>
     </div>
 
     <!-- Carrega TensorFlow.js e o modelo Teachable Machine -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html>
