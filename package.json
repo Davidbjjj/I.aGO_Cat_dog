@@ -1,18 +1,23 @@
 {
-  "name": "i.ago_cat_dog",
+  "name": "tfjs-cat-dog-api",
   "version": "1.0.0",
-  "main": "app.js",
-  "devDependencies": {},
+  "description": "API para classificação de Gato vs Cachorro usando TensorFlow.js",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
-    "@tensorflow/tfjs-node": "^4.20.0",
+    "@tensorflow/tfjs-node": "^4.22.0",
     "body-parser": "^1.20.2",
-    "express": "^4.18.2"
+    "canvas": "^3.2.0",
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "author": "SeuNome",
+  "license": "MIT"
 }
