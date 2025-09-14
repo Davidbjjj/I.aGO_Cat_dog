@@ -10,6 +10,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const loading = document.querySelector('.loading');
     const errorDiv = document.querySelector('.error');
     
+    let model, maxPredictions;
+    
+    // Inicializa o modelo
+    initModel();
+    
+    async function initModel() {
+        try {
+            showLoading();
+            
+            // Carrega o modelo (ajuste os caminhos conforme necessário)
+            const modelURL = './model/model.json';
+            const metadataURL = './model/metadata.json';
+            
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+            
+            hideLoading();
+            console.log('Modelo carregado com sucesso!');
+        } catch (error) {
+            hideLoading();
+            console.error('Erro ao carregar o modelo:', error);
+            showError('Erro ao carregar o modelo de classificação.');
+        }
+    }
+    
     // Drag and drop functionality
     uploadArea.addEventListener('dragover', function(e) {
         e.preventDefault();
@@ -58,36 +83,50 @@ document.addEventListener('DOMContentLoaded', function() {
             previewContainer.style.display = 'block';
             
             // Send for prediction
-            predictImage(e.target.result);
+            predictImage(imagePreview);
         };
         reader.readAsDataURL(file);
     }
     
-    function predictImage(imageData) {
+    async function predictImage(image) {
+        if (!model) {
+            showError('Modelo ainda não foi carregado. Tente novamente em alguns instantes.');
+            return;
+        }
+        
         showLoading();
         
-        fetch('/predict', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ image: imageData })
-        })
-        .then(response => response.json())
-        .then(data => {
-            hideLoading();
+        try {
+            // Faz a predição
+            const prediction = await model.predict(image);
             
-            if (data.success) {
-                showResult(data);
-            } else {
-                showError(data.error || 'Erro ao processar a imagem');
+            // Encontra a classe com maior probabilidade
+            let highestProb = 0;
+            let predictedClass = '';
+            
+            for (let i = 0; i < maxPredictions; i++) {
+                if (prediction[i].probability > highestProb) {
+                    highestProb = prediction[i].probability;
+                    predictedClass = prediction[i].className;
+                }
             }
-        })
-        .catch(error => {
+            
+            // Formata os resultados
+            const confidence = (highestProb * 100).toFixed(2);
+            const className = predictedClass === 'cat' ? 'Gato' : 'Cachorro';
+            
+            // Exibe o resultado
             hideLoading();
-            showError('Erro de conexão. Tente novamente.');
-            console.error('Error:', error);
-        });
+            showResult({
+                class: predictedClass,
+                class_name: `É um ${className}!`,
+                confidence: confidence
+            });
+        } catch (error) {
+            hideLoading();
+            console.error('Erro na predição:', error);
+            showError('Erro ao processar a imagem. Tente novamente.');
+        }
     }
     
     function showResult(data) {
