@@ -20,10 +20,13 @@
         <div class="actions">
             <button id="classify-btn" class="action-btn classify">Classificar Imagem</button>
             <button id="detect-btn" class="upload-btn">Detectar Gato/Cachorro na Imagem</button>
+            <button id="segment-btn" class="action-btn segment">Segmentar Imagem</button>
         </div>
 
-<canvas id="canvas" style="display:none;"></canvas>
-        
+        <!-- CANVAS DEVEM FICAR AQUI -->
+        <canvas id="canvas" style="display:none;"></canvas>
+        <canvas id="segmentation-canvas" style="display:none;"></canvas>
+
         <div class="preview-container">
             <img id="image-preview" alt="Pré-visualização da imagem">
         </div>
@@ -49,10 +52,9 @@
         </div>
     </div>
 
-    <!-- Carrega TensorFlow.js e o modelo Teachable Machine -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0"></script>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix"></script>
 </body>
 </html>
