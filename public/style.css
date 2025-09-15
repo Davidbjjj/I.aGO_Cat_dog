@@ -282,3 +282,45 @@ h1 {
 .detect-btn.active {
     background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
 }
+
+.prediction-details {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    text-align: left;
+}
+
+.prediction-bar {
+    height: 20px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    margin: 5px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.prediction-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.prediction-label {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    line-height: 20px;
+    color: #333;
+    font-weight: 500;
+    text-shadow: 0 0 2px white;
+}
+
+.prediction-value {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    line-height: 20px;
+    color: #333;
+    font-weight: 500;
+}
