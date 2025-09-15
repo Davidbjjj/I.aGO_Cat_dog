@@ -228,16 +228,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     hideResult();
 
-    canvas.width = currentImage.width;
-    canvas.height = currentImage.height;
+    // Redimensiona a imagem para garantir compatibilidade mobile
+    const resizedImage = getResizedImageElement(currentImage, 640);
+
+    canvas.width = resizedImage.width;
+    canvas.height = resizedImage.height;
     canvas.style.display = "block";
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(resizedImage, 0, 0, canvas.width, canvas.height);
 
     showLoading();
     try {
-      const predictions = await detectionModel.detect(currentImage);
+      const predictions = await detectionModel.detect(resizedImage);
+      console.log(predictions); // Veja no console do mobile (inspecione pelo PC)
       hideLoading();
 
       let detectedObjects = [];
@@ -383,6 +387,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function hideError() {
     errorDiv.style.display = "none";
+  }
+
+  function getResizedImageElement(imageElement, maxSize = 640) {
+    const canvas = document.createElement('canvas');
+    let width = imageElement.naturalWidth || imageElement.width;
+    let height = imageElement.naturalHeight || imageElement.height;
+    if (width > maxSize || height > maxSize) {
+      if (width > height) {
+        height = Math.round(height * (maxSize / width));
+        width = maxSize;
+      } else {
+        width = Math.round(width * (maxSize / height));
+        height = maxSize;
+      }
+    }
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext('2d').drawImage(imageElement, 0, 0, width, height);
+    return canvas;
   }
 
   async function predictImage(imageElement) {
