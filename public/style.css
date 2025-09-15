@@ -171,29 +171,6 @@ h1 {
     display: none;
 }
 
-.api-info {
-    margin-top: 30px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border-left: 4px solid #667eea;
-}
-
-.api-info p {
-    margin: 10px 0;
-    color: #666;
-}
-
-.api-info a {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.api-info a:hover {
-    text-decoration: underline;
-}
-
 @media (max-width: 768px) {
     .container {
         padding: 20px;
@@ -203,12 +180,105 @@ h1 {
     h1 {
         font-size: 2rem;
     }
-    
-    .upload-area {
-        padding: 30px 15px;
-    }
-    
-    .upload-icon {
-        font-size: 40px;
-    }
+}
+#canvas {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+#detect-btn {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+#detect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(67, 233, 123, 0.4);
+}
+#detect-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+#detect-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+.actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.action-btn.classify {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.action-btn.detect {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.action-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+/* Estilo para o resultado de detecção */
+.detection-result {
+    background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+}
+
+/* Garantir que a imagem e o canvas tenham o mesmo estilo */
+#image-preview, #canvas {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* Estilo para indicar o modo ativo */
+.action-btn.active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 2px solid white;
+}
+
+.classify-btn.active {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+.detect-btn.active {
+    background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
 }
